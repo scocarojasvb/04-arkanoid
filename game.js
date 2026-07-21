@@ -264,7 +264,7 @@ function updateHighScore() {
 }
 
 function checkVictory() {
-  if ( state.bricks.every( ( brick ) => !brick.alive ) ) {
+  if ( state.bricks.every( ( brick ) => !brick.alive ) && state.explosions.length === 0 ) {
     state.status = 'won';
   }
 }
