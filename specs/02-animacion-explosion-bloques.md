@@ -1,6 +1,6 @@
 # SPEC 02 — Animación de explosión al romper bloques
 
-> **Estado:** Approved
+> **Estado:** Implementado
 > **Depende de:** 01-mvp-jugable
 > **Fecha:** 2026-07-21
 > **Objetivo:** Reemplazar la desaparición instantánea de bloques por una animación de explosión de 4 frames (ya definida en `assets/spritesheet.js`), soportando múltiples explosiones simultáneas y retrasando la pantalla de victoria hasta que la última termine.
@@ -48,12 +48,12 @@ Convenciones:
 
 ## Acceptance criteria
 
-- [ ] Al romper un bloque, este desaparece de inmediato y se ve una animación de explosión de 4 frames en su posición, usando los colores/frames definidos en `EXPLOSION_FRAMES`.
-- [ ] La animación completa dura ~150ms (`EXPLOSION_DURATION`) y no depende del FPS del navegador.
-- [ ] Si se rompen dos o más bloques en un lapso corto, se ven las explosiones correspondientes simultáneamente, cada una en su propia posición y color.
-- [ ] Cada explosión desaparece del estado (`state.explosions`) al terminar su animación, sin dejar residuos dibujados.
-- [ ] Al romper el último bloque, la pantalla de "¡Ganaste!" no aparece hasta que la última explosión visible haya terminado.
-- [ ] El resto del juego (vidas, puntaje, pausa, game over, highscore) sigue funcionando igual que en el spec 01, sin regresiones.
+- [x] Al romper un bloque, este desaparece de inmediato y se ve una animación de explosión de 4 frames en su posición, usando los colores/frames definidos en `EXPLOSION_FRAMES`.
+- [x] La animación completa dura ~150ms (`EXPLOSION_DURATION`) y no depende del FPS del navegador.
+- [x] Si se rompen dos o más bloques en un lapso corto, se ven las explosiones correspondientes simultáneamente, cada una en su propia posición y color.
+- [x] Cada explosión desaparece del estado (`state.explosions`) al terminar su animación, sin dejar residuos dibujados.
+- [x] Al romper el último bloque, la pantalla de "¡Ganaste!" no aparece hasta que la última explosión visible haya terminado.
+- [x] El resto del juego (vidas, puntaje, pausa, game over, highscore) sigue funcionando igual que en el spec 01, sin regresiones.
 
 ## Decisions
 
