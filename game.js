@@ -1,13 +1,16 @@
 const canvas = document.getElementById( 'game' );
 const ctx = canvas.getContext( '2d' );
 
-const BRICK_ROWS = 5;
-const BRICK_COLS = 8;
 const BRICK_W = 90;
 const BRICK_H = 30;
 const BRICK_GAP = 10;
 const BRICK_OFFSET_Y = 60;
-const BRICK_ROW_COLORS = [ 'red', 'yellow', 'cyan', 'magenta', 'hotpink' ];
+
+const LEVELS = [
+  { rows: 5, cols: 8, colorPattern: [ 'red', 'yellow', 'cyan', 'magenta', 'hotpink' ] },
+  { rows: 6, cols: 8, colorPattern: [ 'cyan', 'magenta', 'yellow', 'red', 'hotpink', 'cyan' ] },
+  { rows: 6, cols: 10, colorPattern: [ 'hotpink', 'red', 'magenta', 'yellow', 'cyan', 'red' ] },
+];
 
 const INITIAL_PADDLE = { x: 320, y: 560, w: 100, h: 14 };
 const INITIAL_BALL = { x: 400, y: 300, vx: 4, vy: -4, radius: 8 };
@@ -34,6 +37,8 @@ const state = {
   bricks: [],
   explosions: [],
   muted: localStorage.getItem( MUTED_KEY ) === 'true',
+  level: 1,
+  levelMessage: null,
 };
 
 function generateBricks( levelConfig ) {
@@ -55,7 +60,7 @@ function generateBricks( levelConfig ) {
   return bricks;
 }
 
-state.bricks = generateBricks( { rows: BRICK_ROWS, cols: BRICK_COLS, colorPattern: BRICK_ROW_COLORS } );
+state.bricks = generateBricks( LEVELS[ state.level - 1 ] );
 
 function drawPaddle() {
   drawSprite( ctx, 'paddle', state.paddle.x, state.paddle.y, state.paddle.w, state.paddle.h );
@@ -286,7 +291,12 @@ function updateHighScore() {
 
 function checkVictory() {
   if ( state.bricks.every( ( brick ) => !brick.alive ) && state.explosions.length === 0 ) {
-    state.status = 'won';
+    if ( state.level < LEVELS.length ) {
+      state.status = 'levelComplete';
+      state.levelMessage = { text: 'Nivel ' + state.level + ' completado', startTime: performance.now() };
+    } else {
+      state.status = 'won';
+    }
   }
 }
 
@@ -307,7 +317,7 @@ function restartGame() {
   state.status = 'playing';
   state.score = 0;
   state.lives = 3;
-  state.bricks = generateBricks( { rows: BRICK_ROWS, cols: BRICK_COLS, colorPattern: BRICK_ROW_COLORS } );
+  state.bricks = generateBricks( LEVELS[ state.level - 1 ] );
   resetBallAndPaddle();
 }
 
