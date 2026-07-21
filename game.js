@@ -15,6 +15,14 @@ const INITIAL_BALL = { x: 400, y: 300, vx: 4, vy: -4, radius: 8 };
 
 const HIGHSCORE_KEY = 'arkanoid:highscore:v1';
 
+const SOUND_BALL_BOUNCE = 'assets/sounds/ball-bounce.mp3';
+const SOUND_BREAK = 'assets/sounds/break-sound.mp3';
+
+function playSound( src ) {
+  const audio = new Audio( src );
+  audio.play();
+}
+
 const state = {
   status: 'playing', // 'playing' | 'paused' | 'won' | 'gameover'
   score: 0,
@@ -216,6 +224,8 @@ function checkPaddleCollision() {
   ball.vy = -BALL_SPEED * Math.cos( angle );
   ball.y = paddle.y - ball.radius;
 
+  playSound( SOUND_BALL_BOUNCE );
+
   return true;
 }
 
@@ -230,6 +240,7 @@ function checkBrickCollision() {
     brick.alive = false;
     state.score += 10;
     updateHighScore();
+    playSound( SOUND_BREAK );
 
     state.explosions.push( {
       x: brick.x,
@@ -304,14 +315,17 @@ function updateBall() {
   if ( ball.x - ball.radius <= 0 ) {
     ball.x = ball.radius;
     ball.vx = -ball.vx;
+    playSound( SOUND_BALL_BOUNCE );
   } else if ( ball.x + ball.radius >= canvas.width ) {
     ball.x = canvas.width - ball.radius;
     ball.vx = -ball.vx;
+    playSound( SOUND_BALL_BOUNCE );
   }
 
   if ( ball.y - ball.radius <= 0 ) {
     ball.y = ball.radius;
     ball.vy = -ball.vy;
+    playSound( SOUND_BALL_BOUNCE );
   } else if ( checkPaddleCollision() ) {
     // rebote resuelto en checkPaddleCollision
   } else if ( ball.y + ball.radius >= canvas.height ) {
