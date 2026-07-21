@@ -71,6 +71,10 @@ function drawExplosions() {
     );
     drawFrame( ctx, frames[ frameIndex ], explosion.x, explosion.y, BRICK_W, BRICK_H );
   } );
+
+  state.explosions = state.explosions.filter(
+    ( explosion ) => performance.now() - explosion.startTime < EXPLOSION_DURATION
+  );
 }
 
 const LIFE_ICON_SIZE = 20;
