@@ -1,6 +1,6 @@
 # SPEC 01 — MVP jugable de Arkanoid
 
-> **Estado:** Approved
+> **Estado:** Implmentado
 > **Depende de:** Ninguno
 > **Fecha:** 2026-07-21
 > **Objetivo:** Construir un Arkanoid jugable de principio a fin (pala, bola, bloques, vidas, puntaje, victoria/derrota y highscore) usando los assets existentes.
@@ -69,16 +69,16 @@ Convenciones:
 
 ## Acceptance criteria
 
-- [ ] El juego carga en el navegador sin errores en consola.
-- [ ] La pala se mueve tanto con el mouse como con las flechas / A-D, sin salirse del canvas.
-- [ ] La bola rebota correctamente contra paredes y pala.
-- [ ] Al golpear un bloque, este desaparece inmediatamente y el puntaje aumenta en 10.
-- [ ] Al caer la bola fuera del área jugable, se resta una vida y la bola/pala se reinician.
-- [ ] Al llegar a 0 vidas, se muestra la pantalla de "Game Over" con opción de reiniciar, y al reiniciar el juego vuelve a un estado jugable desde cero.
-- [ ] Al romper todos los bloques, se muestra la pantalla de "¡Ganaste!" con opción de iniciar una nueva partida.
-- [ ] Presionar `P` pausa el juego (bola y pala dejan de moverse) y un segundo `P` lo reanuda.
-- [ ] El mejor puntaje se muestra en pantalla y persiste tras recargar la página (usando `localStorage`).
-- [ ] Si el puntaje de la partida actual supera el highscore guardado, este se actualiza.
+- [x] El juego carga en el navegador sin errores en consola.
+- [x] La pala se mueve tanto con el mouse como con las flechas / A-D, sin salirse del canvas.
+- [x] La bola rebota correctamente contra paredes y pala.
+- [x] Al golpear un bloque, este desaparece inmediatamente y el puntaje aumenta en 10.
+- [x] Al caer la bola fuera del área jugable, se resta una vida y la bola/pala se reinician.
+- [x] Al llegar a 0 vidas, se muestra la pantalla de "Game Over" con opción de reiniciar, y al reiniciar el juego vuelve a un estado jugable desde cero.
+- [x] Al romper todos los bloques, se muestra la pantalla de "¡Ganaste!" con opción de iniciar una nueva partida.
+- [x] Presionar `P` pausa el juego (bola y pala dejan de moverse) y un segundo `P` lo reanuda.
+- [x] El mejor puntaje se muestra en pantalla y persiste tras recargar la página (usando `localStorage`).
+- [x] Si el puntaje de la partida actual supera el highscore guardado, este se actualiza.
 
 ## Decisions
 
