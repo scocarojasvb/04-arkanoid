@@ -7,9 +7,28 @@ const BRICK_GAP = 10;
 const BRICK_OFFSET_Y = 60;
 
 const LEVELS = [
-  { rows: 5, cols: 8, colorPattern: [ 'red', 'yellow', 'cyan', 'magenta', 'hotpink' ] },
-  { rows: 6, cols: 8, colorPattern: [ 'cyan', 'magenta', 'yellow', 'red', 'hotpink', 'cyan' ] },
-  { rows: 6, cols: 10, colorPattern: [ 'hotpink', 'red', 'magenta', 'yellow', 'cyan', 'red' ] },
+  {
+    rows: 5,
+    cols: 8,
+    colorPattern: [ 'red', 'yellow', 'cyan', 'magenta', 'hotpink' ],
+  },
+  {
+    rows: 6,
+    cols: 8,
+    colorPattern: [ 'cyan', 'magenta', 'yellow', 'red', 'hotpink', 'cyan' ],
+    // Tablero en damero: deja huecos que obligan a cambiar la trayectoria de la bola.
+    isBrickAt: ( row, col ) => ( row + col ) % 2 === 0,
+  },
+  {
+    rows: 7,
+    cols: 10,
+    colorPattern: [ 'hotpink', 'red', 'magenta', 'yellow', 'cyan', 'gray' ],
+    // Pirámide invertida: cada fila hacia abajo es más angosta.
+    isBrickAt: ( row, col, rows, cols ) => {
+      const margin = row;
+      return col >= margin && col < cols - margin;
+    },
+  },
 ];
 
 const INITIAL_PADDLE = { x: 320, y: 560, w: 100, h: 14 };
@@ -58,11 +77,12 @@ const state = {
 };
 
 function generateBricks( levelConfig ) {
-  const { rows, cols, colorPattern } = levelConfig;
+  const { rows, cols, colorPattern, isBrickAt } = levelConfig;
   const offsetX = ( canvas.width - ( cols * BRICK_W + ( cols - 1 ) * BRICK_GAP ) ) / 2;
   const bricks = [];
   for ( let row = 0; row < rows; row++ ) {
     for ( let col = 0; col < cols; col++ ) {
+      if ( isBrickAt && !isBrickAt( row, col, rows, cols ) ) continue;
       bricks.push( {
         x: offsetX + col * ( BRICK_W + BRICK_GAP ),
         y: BRICK_OFFSET_Y + row * ( BRICK_H + BRICK_GAP ),
@@ -258,7 +278,7 @@ function updatePaddleKeyboard() {
   }
 }
 
-const BALL_SPEED = Math.hypot( state.ball.vx, state.ball.vy );
+const BALL_SPEED = Math.hypot( INITIAL_BALL.vx, INITIAL_BALL.vy );
 const PADDLE_MAX_BOUNCE_ANGLE = Math.PI / 3; // 60 grados desde la vertical
 
 function checkPaddleCollision() {
@@ -406,6 +426,7 @@ function updateLevelTransition() {
   state.levelMessage = null;
   state.level += 1;
   state.bricks = generateBricks( LEVELS[ state.level - 1 ] );
+  resetBallAndPaddle();
   state.status = 'playing';
 }
 
