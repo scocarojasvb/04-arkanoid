@@ -60,13 +60,23 @@ function drawBricks() {
   } );
 }
 
+const LIFE_ICON_SIZE = 20;
+const LIFE_ICON_GAP = 8;
+const LIFE_ICON_MARGIN = 10;
+
 function drawScore() {
   ctx.fillStyle = '#fff';
   ctx.font = '20px sans-serif';
   ctx.textBaseline = 'top';
   ctx.fillText( 'Score: ' + state.score, 10, 10 );
-  ctx.fillText( 'Vidas: ' + state.lives, 10, 35 );
-  ctx.fillText( 'Highscore: ' + state.highScore, 10, 60 );
+  ctx.fillText( 'Highscore: ' + state.highScore, 10, 35 );
+}
+
+function drawLives() {
+  for ( let i = 0; i < state.lives; i++ ) {
+    const x = canvas.width - LIFE_ICON_MARGIN - ( i + 1 ) * ( LIFE_ICON_SIZE + LIFE_ICON_GAP ) + LIFE_ICON_GAP;
+    drawSprite( ctx, 'ball', x, LIFE_ICON_MARGIN, LIFE_ICON_SIZE, LIFE_ICON_SIZE );
+  }
 }
 
 function drawGameOverScreen() {
@@ -111,6 +121,7 @@ function render() {
   drawPaddle();
   drawBall();
   drawScore();
+  drawLives();
 
   if ( state.status === 'gameover' ) {
     drawGameOverScreen();
