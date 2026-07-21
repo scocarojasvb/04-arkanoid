@@ -14,11 +14,13 @@ const INITIAL_PADDLE = { x: 320, y: 560, w: 100, h: 14 };
 const INITIAL_BALL = { x: 400, y: 300, vx: 4, vy: -4, radius: 8 };
 
 const HIGHSCORE_KEY = 'arkanoid:highscore:v1';
+const MUTED_KEY = 'arkanoid:muted:v1';
 
 const SOUND_BALL_BOUNCE = 'assets/sounds/ball-bounce.mp3';
 const SOUND_BREAK = 'assets/sounds/break-sound.mp3';
 
 function playSound( src ) {
+  if ( state.muted ) return;
   const audio = new Audio( src );
   audio.play();
 }
@@ -32,6 +34,7 @@ const state = {
   ball: { ...INITIAL_BALL },
   bricks: [],
   explosions: [],
+  muted: localStorage.getItem( MUTED_KEY ) === 'true',
 };
 
 function createBricks() {
@@ -95,6 +98,7 @@ function drawScore() {
   ctx.textBaseline = 'top';
   ctx.fillText( 'Score: ' + state.score, 10, 10 );
   ctx.fillText( 'Highscore: ' + state.highScore, 10, 35 );
+  ctx.fillText( 'Sonido: ' + ( state.muted ? 'OFF' : 'ON' ), 10, 60 );
 }
 
 function drawLives() {
@@ -178,6 +182,11 @@ window.addEventListener( 'keydown', ( e ) => {
     } else if ( state.status === 'paused' ) {
       state.status = 'playing';
     }
+  }
+
+  if ( e.key.toLowerCase() === 'm' ) {
+    state.muted = !state.muted;
+    localStorage.setItem( MUTED_KEY, String( state.muted ) );
   }
 } );
 
