@@ -6,7 +6,6 @@ const BRICK_COLS = 8;
 const BRICK_W = 90;
 const BRICK_H = 30;
 const BRICK_GAP = 10;
-const BRICK_OFFSET_X = ( canvas.width - ( BRICK_COLS * BRICK_W + ( BRICK_COLS - 1 ) * BRICK_GAP ) ) / 2;
 const BRICK_OFFSET_Y = 60;
 const BRICK_ROW_COLORS = [ 'red', 'yellow', 'cyan', 'magenta', 'hotpink' ];
 
@@ -37,16 +36,18 @@ const state = {
   muted: localStorage.getItem( MUTED_KEY ) === 'true',
 };
 
-function createBricks() {
+function generateBricks( levelConfig ) {
+  const { rows, cols, colorPattern } = levelConfig;
+  const offsetX = ( canvas.width - ( cols * BRICK_W + ( cols - 1 ) * BRICK_GAP ) ) / 2;
   const bricks = [];
-  for ( let row = 0; row < BRICK_ROWS; row++ ) {
-    for ( let col = 0; col < BRICK_COLS; col++ ) {
+  for ( let row = 0; row < rows; row++ ) {
+    for ( let col = 0; col < cols; col++ ) {
       bricks.push( {
-        x: BRICK_OFFSET_X + col * ( BRICK_W + BRICK_GAP ),
+        x: offsetX + col * ( BRICK_W + BRICK_GAP ),
         y: BRICK_OFFSET_Y + row * ( BRICK_H + BRICK_GAP ),
         w: BRICK_W,
         h: BRICK_H,
-        color: BRICK_ROW_COLORS[ row ],
+        color: colorPattern[ row % colorPattern.length ],
         alive: true,
       } );
     }
@@ -54,7 +55,7 @@ function createBricks() {
   return bricks;
 }
 
-state.bricks = createBricks();
+state.bricks = generateBricks( { rows: BRICK_ROWS, cols: BRICK_COLS, colorPattern: BRICK_ROW_COLORS } );
 
 function drawPaddle() {
   drawSprite( ctx, 'paddle', state.paddle.x, state.paddle.y, state.paddle.w, state.paddle.h );
@@ -306,7 +307,7 @@ function restartGame() {
   state.status = 'playing';
   state.score = 0;
   state.lives = 3;
-  state.bricks = createBricks();
+  state.bricks = generateBricks( { rows: BRICK_ROWS, cols: BRICK_COLS, colorPattern: BRICK_ROW_COLORS } );
   resetBallAndPaddle();
 }
 
