@@ -28,7 +28,7 @@ function playSound( src ) {
 }
 
 const state = {
-  status: 'playing', // 'playing' | 'paused' | 'won' | 'gameover'
+  status: 'playing', // 'playing' | 'paused' | 'levelComplete' | 'gameComplete' | 'gameover'
   score: 0,
   lives: 3,
   highScore: Number( localStorage.getItem( HIGHSCORE_KEY ) ) || 0,
@@ -149,14 +149,14 @@ function drawLevelCompleteScreen() {
   ctx.textAlign = 'left';
 }
 
-function drawWinScreen() {
+function drawGameCompleteScreen() {
   ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
   ctx.fillRect( 0, 0, canvas.width, canvas.height );
 
   ctx.fillStyle = '#fff';
   ctx.textAlign = 'center';
   ctx.font = '48px sans-serif';
-  ctx.fillText( '¡Ganaste!', canvas.width / 2, canvas.height / 2 - 20 );
+  ctx.fillText( '¡Completaste el juego!', canvas.width / 2, canvas.height / 2 - 20 );
 
   ctx.font = '20px sans-serif';
   ctx.fillText( 'Presiona ENTER para jugar de nuevo', canvas.width / 2, canvas.height / 2 + 30 );
@@ -174,8 +174,8 @@ function render() {
 
   if ( state.status === 'gameover' ) {
     drawGameOverScreen();
-  } else if ( state.status === 'won' ) {
-    drawWinScreen();
+  } else if ( state.status === 'gameComplete' ) {
+    drawGameCompleteScreen();
   } else if ( state.status === 'levelComplete' ) {
     drawLevelCompleteScreen();
   } else if ( state.status === 'paused' ) {
@@ -193,7 +193,7 @@ function clampPaddleX( x ) {
 window.addEventListener( 'keydown', ( e ) => {
   keys[ e.key.toLowerCase() ] = true;
 
-  if ( e.key === 'Enter' && ( state.status === 'gameover' || state.status === 'won' ) ) {
+  if ( e.key === 'Enter' && ( state.status === 'gameover' || state.status === 'gameComplete' ) ) {
     restartGame();
   }
 
@@ -310,7 +310,7 @@ function checkVictory() {
       state.status = 'levelComplete';
       state.levelMessage = { text: 'Nivel ' + state.level + ' completado', startTime: performance.now() };
     } else {
-      state.status = 'won';
+      state.status = 'gameComplete';
     }
   }
 }
