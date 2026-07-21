@@ -332,6 +332,7 @@ function restartGame() {
   state.status = 'playing';
   state.score = 0;
   state.lives = 3;
+  state.level = 1;
   state.bricks = generateBricks( LEVELS[ state.level - 1 ] );
   resetBallAndPaddle();
 }
