@@ -214,6 +214,13 @@ function checkBrickCollision() {
     state.score += 10;
     updateHighScore();
 
+    state.explosions.push( {
+      x: brick.x,
+      y: brick.y,
+      color: brick.color,
+      startTime: performance.now(),
+    } );
+
     const overlapLeft = ball.x + ball.radius - brick.x;
     const overlapRight = brick.x + brick.w - ( ball.x - ball.radius );
     const overlapTop = ball.y + ball.radius - brick.y;
