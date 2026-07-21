@@ -136,6 +136,19 @@ function drawPauseIndicator() {
   ctx.textAlign = 'left';
 }
 
+const LEVEL_MESSAGE_DURATION = 3000;
+
+function drawLevelCompleteScreen() {
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+  ctx.fillRect( 0, 0, canvas.width, canvas.height );
+
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.font = '48px sans-serif';
+  ctx.fillText( state.levelMessage.text, canvas.width / 2, canvas.height / 2 );
+  ctx.textAlign = 'left';
+}
+
 function drawWinScreen() {
   ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
   ctx.fillRect( 0, 0, canvas.width, canvas.height );
@@ -163,6 +176,8 @@ function render() {
     drawGameOverScreen();
   } else if ( state.status === 'won' ) {
     drawWinScreen();
+  } else if ( state.status === 'levelComplete' ) {
+    drawLevelCompleteScreen();
   } else if ( state.status === 'paused' ) {
     drawPauseIndicator();
   }
@@ -353,9 +368,22 @@ function updateBall() {
   }
 }
 
+function updateLevelTransition() {
+  if ( state.status !== 'levelComplete' ) return;
+
+  const elapsed = performance.now() - state.levelMessage.startTime;
+  if ( elapsed < LEVEL_MESSAGE_DURATION ) return;
+
+  state.levelMessage = null;
+  state.level += 1;
+  state.bricks = generateBricks( LEVELS[ state.level - 1 ] );
+  state.status = 'playing';
+}
+
 function update() {
   updatePaddleKeyboard();
   updateBall();
+  updateLevelTransition();
 }
 
 function loop() {
