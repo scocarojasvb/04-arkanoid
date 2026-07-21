@@ -1,6 +1,6 @@
 # SPEC 03 — Efectos de sonido y niveles
 
-> **Estado:** Approved
+> **Estado:** Implemented
 > **Depende de:** 01-mvp-jugable, 02-animacion-explosion-bloques
 > **Fecha:** 2026-07-21
 > **Objetivo:** Añadir efectos de sonido (rebote y bloque roto, con mute persistente) y progresión de 3 niveles con layouts distintos, manteniendo puntaje y vidas acumulados entre niveles.
@@ -68,17 +68,17 @@ Convenciones:
 
 ## Acceptance criteria
 
-- [ ] Cada rebote de la bola contra pared o pala reproduce `ball-bounce.mp3`.
-- [ ] Al romper un bloque se reproduce `break-sound.mp3` y **no** suena `ball-bounce.mp3` en ese mismo impacto.
-- [ ] Romper dos o más bloques en rápida sucesión reproduce los sonidos superpuestos, sin cortarse entre sí.
-- [ ] Presionar `M` silencia todos los sonidos; un segundo `M` los reactiva, con el indicador en pantalla reflejando el estado actual.
-- [ ] La preferencia de mute persiste tras recargar la página (`localStorage`, clave `arkanoid:muted:v1`).
-- [ ] El nivel 1 usa el layout de 5x8 (igual al spec 01); los niveles 2 y 3 usan layouts distintos entre sí y respecto al nivel 1.
-- [ ] Al romper todos los bloques del nivel 1 o 2 (sin explosiones activas), se muestra "Nivel X completado" ~3 segundos y luego arranca el siguiente nivel automáticamente, sin input del jugador.
-- [ ] El puntaje y las vidas restantes se mantienen (no se resetean) al pasar de un nivel al siguiente.
-- [ ] Al romper todos los bloques del nivel 3 (sin explosiones activas), se muestra la pantalla "¡Completaste el juego!" (distinta de la pantalla de victoria de un solo nivel), con opción de iniciar nueva partida.
-- [ ] Al llegar a 0 vidas en cualquier nivel, se muestra "Game Over"; al reiniciar, el juego vuelve al nivel 1 con puntaje en 0 y 3 vidas.
-- [ ] El resto del juego (pala, bola, explosiones, pausa, highscore) sigue funcionando igual que en los specs 01 y 02, sin regresiones.
+- [x] Cada rebote de la bola contra pared o pala reproduce `ball-bounce.mp3`.
+- [x] Al romper un bloque se reproduce `break-sound.mp3` y **no** suena `ball-bounce.mp3` en ese mismo impacto.
+- [x] Romper dos o más bloques en rápida sucesión reproduce los sonidos superpuestos, sin cortarse entre sí.
+- [x] Presionar `M` silencia todos los sonidos; un segundo `M` los reactiva, con el indicador en pantalla reflejando el estado actual.
+- [x] La preferencia de mute persiste tras recargar la página (`localStorage`, clave `arkanoid:muted:v1`).
+- [x] El nivel 1 usa el layout de 5x8 (igual al spec 01); los niveles 2 y 3 usan layouts distintos entre sí y respecto al nivel 1.
+- [x] Al romper todos los bloques del nivel 1 o 2 (sin explosiones activas), se muestra "Nivel X completado" ~3 segundos y luego arranca el siguiente nivel automáticamente, sin input del jugador.
+- [x] El puntaje y las vidas restantes se mantienen (no se resetean) al pasar de un nivel al siguiente.
+- [x] Al romper todos los bloques del nivel 3 (sin explosiones activas), se muestra la pantalla "¡Completaste el juego!" (distinta de la pantalla de victoria de un solo nivel), con opción de iniciar nueva partida.
+- [x] Al llegar a 0 vidas en cualquier nivel, se muestra "Game Over"; al reiniciar, el juego vuelve al nivel 1 con puntaje en 0 y 3 vidas.
+- [x] El resto del juego (pala, bola, explosiones, pausa, highscore) sigue funcionando igual que en los specs 01 y 02, sin regresiones.
 
 ## Decisions
 
