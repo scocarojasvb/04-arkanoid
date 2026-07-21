@@ -20,10 +20,26 @@ const MUTED_KEY = 'arkanoid:muted:v1';
 
 const SOUND_BALL_BOUNCE = 'assets/sounds/ball-bounce.mp3';
 const SOUND_BREAK = 'assets/sounds/break-sound.mp3';
+const LEVEL_COMPLETE_BONUS = 100;
+
+const audioCache = {};
+
+function getAudio( src ) {
+  if ( !audioCache[ src ] ) {
+    const audio = new Audio( src );
+    audio.preload = 'auto';
+    audio.load();
+    audioCache[ src ] = audio;
+  }
+  return audioCache[ src ];
+}
+
+[ SOUND_BALL_BOUNCE, SOUND_BREAK ].forEach( getAudio );
 
 function playSound( src ) {
   if ( state.muted ) return;
-  const audio = new Audio( src );
+  const audio = getAudio( src );
+  audio.currentTime = 0;
   audio.play();
 }
 
@@ -104,7 +120,15 @@ function drawScore() {
   ctx.textBaseline = 'top';
   ctx.fillText( 'Score: ' + state.score, 10, 10 );
   ctx.fillText( 'Highscore: ' + state.highScore, 10, 35 );
-  ctx.fillText( 'Sonido: ' + ( state.muted ? 'OFF' : 'ON' ), 10, 60 );
+}
+
+function drawSoundStatus() {
+  ctx.fillStyle = '#fff';
+  ctx.font = '20px sans-serif';
+  ctx.textBaseline = 'top';
+  ctx.textAlign = 'right';
+  ctx.fillText( 'Sonido: ' + ( state.muted ? 'OFF' : 'ON' ), canvas.width - LIFE_ICON_MARGIN, canvas.height - LIFE_ICON_MARGIN - 20 );
+  ctx.textAlign = 'left';
 }
 
 function drawLives() {
@@ -171,6 +195,7 @@ function render() {
   drawBall();
   drawScore();
   drawLives();
+  drawSoundStatus();
 
   if ( state.status === 'gameover' ) {
     drawGameOverScreen();
@@ -306,6 +331,9 @@ function updateHighScore() {
 
 function checkVictory() {
   if ( state.bricks.every( ( brick ) => !brick.alive ) && state.explosions.length === 0 ) {
+    state.score += LEVEL_COMPLETE_BONUS;
+    updateHighScore();
+
     if ( state.level < LEVELS.length ) {
       state.status = 'levelComplete';
       state.levelMessage = { text: 'Nivel ' + state.level + ' completado', startTime: performance.now() };
