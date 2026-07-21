@@ -23,6 +23,7 @@ const state = {
   paddle: { ...INITIAL_PADDLE },
   ball: { ...INITIAL_BALL },
   bricks: [],
+  explosions: [],
 };
 
 function createBricks() {
