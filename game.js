@@ -61,6 +61,18 @@ function drawBricks() {
   } );
 }
 
+function drawExplosions() {
+  state.explosions.forEach( ( explosion ) => {
+    const frames = EXPLOSION_FRAMES[ explosion.color ];
+    const elapsed = performance.now() - explosion.startTime;
+    const frameIndex = Math.min(
+      frames.length - 1,
+      Math.floor( elapsed / ( EXPLOSION_DURATION / frames.length ) )
+    );
+    drawFrame( ctx, frames[ frameIndex ], explosion.x, explosion.y, BRICK_W, BRICK_H );
+  } );
+}
+
 const LIFE_ICON_SIZE = 20;
 const LIFE_ICON_GAP = 8;
 const LIFE_ICON_MARGIN = 10;
@@ -119,6 +131,7 @@ function drawWinScreen() {
 function render() {
   ctx.clearRect( 0, 0, canvas.width, canvas.height );
   drawBricks();
+  drawExplosions();
   drawPaddle();
   drawBall();
   drawScore();
