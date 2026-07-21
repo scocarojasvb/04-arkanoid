@@ -1,6 +1,6 @@
 # SPEC 03 — Efectos de sonido y niveles
 
-> **Estado:** Implemented
+> **Estado:** Implementado
 > **Depende de:** 01-mvp-jugable, 02-animacion-explosion-bloques
 > **Fecha:** 2026-07-21
 > **Objetivo:** Añadir efectos de sonido (rebote y bloque roto, con mute persistente) y progresión de 3 niveles con layouts distintos, manteniendo puntaje y vidas acumulados entre niveles.
